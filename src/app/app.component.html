@@ -2,4 +2,6 @@
   <input type="text" [(ngModel)]="package">
   <button (click)="getDependencies()">Get Dependencies</button>
 </div>
-<app-tree *ngIf="showTree" [package]="package"></app-tree>
+<div class="tree-container">
+  <app-tree [updatePackageSubject]="updatePackageSubject"></app-tree>
+</div>

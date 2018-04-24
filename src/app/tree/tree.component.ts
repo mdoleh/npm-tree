@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NpmService } from '../../services/npm-service/npm.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-tree',
@@ -7,14 +8,24 @@ import { NpmService } from '../../services/npm-service/npm.service';
   styleUrls: ['./tree.component.css']
 })
 export class TreeComponent implements OnInit {
-  @Input() public package: string;
-  private packageModel: string = "";
+  @Input() public updatePackageSubject: Subject<string>;
+  private package: { name: string, version: string } = { name: "", version: "" };
+  private dependencies: { name: string, version: string }[] = [];
+  private error: string;
 
   constructor(private npmService: NpmService) {}
 
   ngOnInit(): void {
-    this.npmService.getLatestPackage(this.package)
-      .then(data => this.packageModel = JSON.stringify(data));
+    this.updatePackageSubject.subscribe(packageName => {
+      this.package.name = packageName;
+      this.npmService.getLatestPackage(packageName)
+      .then(npmPackage => {
+        this.package.version = npmPackage.version;
+        let keys = Object.keys(npmPackage.dependencies);
+        this.dependencies = keys.map(key => ({ name: key, version: npmPackage.dependencies[key] }));
+      })
+      .catch(err => this.error = "This package doesn't exist or something went wrong.");
+    });
   }
 
 }

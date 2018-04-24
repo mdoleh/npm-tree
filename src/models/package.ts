@@ -53,7 +53,9 @@ export interface PackageVersion {
     main: string;
     repository: Repository;
     engines: Engines;
-    dependencies: {};
+    dependencies: {
+        [packageName: string]: string
+    };
     browserify: Browserify;
     _id: string;
     _npmVersion: string;

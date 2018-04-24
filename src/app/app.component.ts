@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-root',
@@ -6,9 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  private package: string;
   private showTree: boolean = false;
+  private updatePackageSubject: Subject<string> = new Subject();
 
   getDependencies(): void {
-    this.showTree = true;
+    this.updatePackageSubject.next(this.package);
   }
 }

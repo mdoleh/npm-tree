@@ -1,3 +1,7 @@
-<div>
-  {{packageModel}}
+<div class="package-set" *ngIf="!error && package.name">
+  <span>{{package.name}} {{package.version}}</span>
+  <app-package *ngFor="let package of dependencies" [package]="package"></app-package>
+</div>
+<div *ngIf="error">
+  <span>{{error}}</span>
 </div>
