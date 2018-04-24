@@ -1,6 +1,4 @@
-<div class="package-set" (click)="loadDependencies = true">
-  <span>- {{package.name}} {{package.version}}</span>
-  <ng-container *ngIf="loadDependencies">
-      <app-package *ngFor="let package of dependencies" [package]="package"></app-package>
-  </ng-container>
+<div class="package-set">
+  <span [class.exists]="package.alreadyExists">- {{package.name}} {{package.version}}</span>
+  <app-package *ngFor="let package of dependencies" [package]="package"></app-package>
 </div>

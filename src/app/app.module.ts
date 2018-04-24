@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { NpmService } from '../services/npm-service/npm.service';
+import { DependencyListService } from '../services/dependency-list/dependency-list.service';
 import { PackageComponent } from './package/package.component';
 import { TreeComponent } from './tree/tree.component';
 
@@ -20,7 +21,8 @@ import { TreeComponent } from './tree/tree.component';
     FormsModule
   ],
   providers: [
-    NpmService
+    NpmService,
+    DependencyListService
   ],
   bootstrap: [AppComponent]
 })
