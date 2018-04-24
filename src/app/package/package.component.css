@@ -5,6 +5,10 @@
     padding-left: 10px; */
 }
 
-.exists {
+.version-exists {
     color: red;
+}
+
+.package-exists {
+    color: goldenrod;
 }

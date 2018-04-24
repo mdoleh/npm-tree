@@ -2,3 +2,29 @@
     margin-left: 30%;
     margin-right: 30%;
 }
+
+.color-code {
+    margin-top: 10px;
+}
+
+.color-code .code {
+    margin-left: 2px;
+    margin-right: 2px;
+    outline: none;
+    padding: 5px;
+    border: none;
+    vertical-align: middle;
+}
+
+.color-code .code:focus {
+    outline: none;
+    border-style: none;
+}
+
+.color-code .red {
+    background-color: red;
+}
+
+.color-code .yellow {
+    background-color: goldenrod;
+}

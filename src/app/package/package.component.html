@@ -1,4 +1,4 @@
 <div class="package-set">
-  <span [class.exists]="package.alreadyExists">- {{package.name}} {{package.version}}</span>
+  <span [class.version-exists]="package.versionExists" [class.package-exists]="package.packageExists">- {{package.name}} {{package.version}}</span>
   <app-package *ngFor="let package of dependencies" [package]="package"></app-package>
 </div>
