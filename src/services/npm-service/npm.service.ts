@@ -16,18 +16,26 @@ export class NpmService {
     return new Promise((resolve, reject) => {
       this.makeGetCall(packageName, (data: Package) => {
         let latestVersion = data["dist-tags"].latest;
-        return data.versions[latestVersion];
+        let current = data.versions[latestVersion];
+        current.version = this.getValidVersion(current.version);
+        this.formatDependencyVersions(current);
+        return current;
       })
-      .subscribe(data => resolve(data), err => reject(err.json()));
+      .subscribe(data => resolve(data), err => reject(err));
     });
   }
 
   public getPackageByVersion(packageName: string, version: string): Promise<PackageVersion> {
     if (version === "*") return this.getLatestPackage(packageName);
-    version = this.getValidVersion(version);
     return new Promise((resolve, reject) => {
-      this.makeGetCall(packageName, npmPackage => npmPackage.versions[version])
-        .subscribe(data => resolve(data), err => reject(err.json()));
+      this.makeGetCall(packageName, npmPackage => {
+        let current = npmPackage.versions[version];
+        if (!current) current = npmPackage.versions[npmPackage["dist-tags"].latest];
+        current.version = this.getValidVersion(current.version);
+        this.formatDependencyVersions(current);
+        return current;
+      })
+      .subscribe(data => resolve(data), err => reject(err));
     });
   }
 
@@ -38,10 +46,19 @@ export class NpmService {
       .take(1);
   }
 
+  private formatDependencyVersions(current: PackageVersion) {
+    if (current.dependencies) {
+      Object.keys(current.dependencies).map(key => {
+        let version = current.dependencies[key];
+        current.dependencies[key] = this.getValidVersion(version);
+      });
+    }
+  }
+
   private getValidVersion(version: string): string {
+    if (version === "*") return version;
     version = version.replace(/[A-z]/g, "");
     let matches = version.match(/[0-9]+\.[0-9]+\.[0-9]+|[0-9]+/g);
-    if (!matches) console.log(version);
     let parsedVersions = matches.map(verString => verString.split(".")
         .map(value => parseInt(value)));
 
